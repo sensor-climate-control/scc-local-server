@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
 
+
 def on_connect(client, userdata, flags, rc):
    global flag_connected
    flag_connected = 1
@@ -15,6 +16,12 @@ def on_disconnect(client, userdata, rc):
 # a callback functions
 def callback_sensor(client, userdata, msg):
     print(msg.topic,": ",msg.payload.decode("utf-8"))
+
+    # Send data to file
+    data = open("test_sensor_data.csv", "a")
+    send = "{},{}\n".format(msg.topic, msg.payload.decode("utf-8"))
+    data.write(send)
+    data.close()
 
 def client_subscriptions(client):
     client.subscribe("home/+/hmit")
