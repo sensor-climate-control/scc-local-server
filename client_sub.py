@@ -13,19 +13,21 @@ def on_disconnect(client, userdata, rc):
    print("Disconnected from MQTT server")
 
 # a callback functions
-def callback_sensor1(client, userdata, msg):
-    print('ESP sensor2 data: ', msg.payload.decode('utf-8'))
+def callback_sensor(client, userdata, msg):
+    print(msg.topic,": ",msg.payload.decode("utf-8"))
 
 def client_subscriptions(client):
-    client.subscribe("sensor2/hmit")
+    client.subscribe("home/+/hmit")
+    client.subscribe("home/+/temp")
 
-client = mqtt.Client("sensor2") #this should be a unique name
+client = mqtt.Client("sensors") #this should be a unique name
 flag_connected = 0
 
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
-client.message_callback_add('sensor2/hmit', callback_sensor1)
-client.connect('127.0.0.1',1883)
+client.message_callback_add("home/+/hmit", callback_sensor)
+client.message_callback_add("home/+/temp", callback_sensor)
+client.connect("127.0.0.1",1883)
 # start a new thread
 client.loop_start()
 client_subscriptions(client)
