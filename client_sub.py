@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 import time
-
+import requests
 
 def on_connect(client, userdata, flags, rc):
    global flag_connected
@@ -15,7 +15,23 @@ def on_disconnect(client, userdata, rc):
 
 # a callback functions
 def callback_sensor(client, userdata, msg):
+
+    data = msg.payload.decode("utf-8")
+    data = data.split(",")
+
     print(msg.topic,": ",msg.payload.decode("utf-8"))
+
+    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/sensors/63c8aa29922df840d1d7ec10/readings"
+    myobj = [
+                {
+                    "temp": data[0], 
+                    "humidity": data[1],
+                    "date_time": str(time.time())
+                }
+            ]
+    myobj2 = {"testkey": "testvalue"}
+    x = requests.put(url, json=myobj)
+    print(x.status_code)
 
     # Send data to file
     data = open("test_sensor_data.csv", "a")
