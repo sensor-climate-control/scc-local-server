@@ -18,14 +18,18 @@ def callback_sensor(client, userdata, msg):
 
     data = msg.payload.decode("utf-8")
     data = data.split(",")
-
-    print(msg.topic,": ",msg.payload.decode("utf-8"))
-
-    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/sensors/63c8aa29922df840d1d7ec10/readings"
+    tempF = data[0]
+    tempC = data[2]
+    hum = float(data[1]) / 100
+    print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
+    topic = msg.topic
+    topic = topic.split("/")
+    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/sensors/" + topic[1] + "/readings"
     myobj = [
                 {
-                    "temp": data[0], 
-                    "humidity": data[1],
+                    "temp_f": tempF,
+                    "temp_c": tempC,
+                    "humidity": str(hum),
                     "date_time": str(time.time())
                 }
             ]
