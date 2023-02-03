@@ -54,7 +54,7 @@ client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 client.message_callback_add("home/+/hmit", callback_sensor)
 client.message_callback_add("home/+/temp", callback_sensor)
-client.connect("127.0.0.1",1883)
+client.connect("10.0.0.182",1883)
 # start a new thread
 client.loop_start()
 client_subscriptions(client)

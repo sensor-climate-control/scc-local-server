@@ -1,0 +1,22 @@
+services:
+
+############################################################ MQTT
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    ports:
+      - 1883:1883
+      - 9001:9001
+    restart: unless-stopped
+    volumes:
+      - /home/cs461/scc-local-server/mosquitto/config:/mosquitto/config
+      - /home/cs461/scc-local-server/mosquitto/data:/mosquitto/data
+      - /home/cs461/scc-local-server/mosquitto/log:/mosquitto/log
+
+############################################################ Python
+
+  pythonapp:
+    container_name: python
+    build: ./
+    command: python client_sub.py
