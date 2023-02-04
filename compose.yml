@@ -16,7 +16,7 @@ services:
 
 ############################################################ Python
 
-  pythonapp:
+  python-app:
     container_name: python
-    build: ./
-    command: python client_sub.py
+    build: .
+    command: "python -u client_sub.py"
