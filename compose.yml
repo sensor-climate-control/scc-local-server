@@ -10,9 +10,9 @@ services:
       - 9001:9001
     restart: unless-stopped
     volumes:
-      - /home/cs461/scc-local-server/mosquitto/config:/mosquitto/config
-      - /home/cs461/scc-local-server/mosquitto/data:/mosquitto/data
-      - /home/cs461/scc-local-server/mosquitto/log:/mosquitto/log
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
 
 ############################################################ Python
 

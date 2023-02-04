@@ -431,3 +431,12 @@
 1675499584: New client connected from 10.0.0.183:64397 as Arduino-00000ee8 (p2, c1, k60).
 1675499757: mosquitto version 2.0.15 terminating
 1675499757: Saving in-memory database to /mosquitto/data/mosquitto.db.
+1675500744: mosquitto version 2.0.15 starting
+1675500744: Config loaded from /mosquitto/config/mosquitto.conf.
+1675500744: Opening ipv4 listen socket on port 10.
+1675500744: Opening ipv6 listen socket on port 10.
+1675500744: Opening ipv4 listen socket on port 1883.
+1675500744: Opening ipv6 listen socket on port 1883.
+1675500744: mosquitto version 2.0.15 running
+1675500821: mosquitto version 2.0.15 terminating
+1675500821: Saving in-memory database to /mosquitto/data/mosquitto.db.
