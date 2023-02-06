@@ -20,11 +20,10 @@ def callback_sensor(client, userdata, msg):
     data = data.split(",")
     tempF = data[0]
     tempC = data[2]
-    hum = float(data[1]) / 100
+    hum = data[1]
     print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
     topic = msg.topic
-    topic = topic.split("/")
-    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/sensors/" + topic[1] + "/readings"
+    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/" + topic
     myobj = [
                 {
                     "temp_f": tempF,
@@ -44,17 +43,17 @@ def callback_sensor(client, userdata, msg):
     data.close()
 
 def client_subscriptions(client):
-    client.subscribe("home/+/hmit")
-    client.subscribe("home/+/temp")
+    #client.subscribe("home/+/hmit")
+    client.subscribe("sensors/+/readings")
 
 client = mqtt.Client("sensors") #this should be a unique name
 flag_connected = 0
 
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
-client.message_callback_add("home/+/hmit", callback_sensor)
-client.message_callback_add("home/+/temp", callback_sensor)
-client.connect("10.0.0.182",1883)
+#client.message_callback_add("home/+/hmit", callback_sensor)
+client.message_callback_add("sensors/+/readings", callback_sensor)
+client.connect("127.0.0.1",1883)
 # start a new thread
 client.loop_start()
 client_subscriptions(client)
