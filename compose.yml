@@ -19,4 +19,4 @@ services:
   python-app:
     container_name: python
     build: .
-    command: "python -u client_sub.py"
+    command: "python -u client_sub.py ${UPLOAD}"
