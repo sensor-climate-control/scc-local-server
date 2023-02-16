@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
 import requests
+import sys
 
 def on_connect(client, userdata, flags, rc):
    global flag_connected
@@ -15,53 +16,62 @@ def on_disconnect(client, userdata, rc):
 
 # a callback functions
 def callback_sensor(client, userdata, msg):
-
-    data = msg.payload.decode("utf-8")
-    data = data.split(",")
-    tempF = data[0]
-    tempC = data[2]
-    hum = float(data[1]) / 100
-    print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
-    topic = msg.topic
-    topic = topic.split("/")
-    url = "https://osuscc-testing.azurewebsites.net/api/homes/63c8a874922df840d1d7ec0f/sensors/" + topic[1] + "/readings"
-    myobj = [
-                {
-                    "temp_f": tempF,
-                    "temp_c": tempC,
-                    "humidity": str(hum),
-                    "date_time": str(time.time())
-                }
-            ]
-    myobj2 = {"testkey": "testvalue"}
-    x = requests.put(url, json=myobj)
-    print(x.status_code)
+    upload = str(sys.argv[1])
+    
+    # send data to server
+    if upload == "remote" or upload == "both":
+        data = msg.payload.decode("utf-8")
+        data = data.split(",")
+        tempF = data[0]
+        tempC = data[2]
+        hum = float(data[1]) / 100
+        print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
+        url = "https://osuscc-testing.azurewebsites.net" + msg.topic
+        myobj = [
+                    {
+                        "temp_f": tempF,
+                        "temp_c": tempC,
+                        "humidity": str(hum),
+                        "date_time": str(time.time())
+                    }
+                ]
+        myobj2 = {"testkey": "testvalue"}
+        x = requests.put(url, json=myobj)
+        print(x.status_code)
 
     # Send data to file
-    data = open("test_sensor_data.csv", "a")
-    send = "{},{}\n".format(msg.topic, msg.payload.decode("utf-8"))
-    data.write(send)
-    data.close()
+    if upload == "local" or upload == "both":
+        data = open("./python/data/test_sensor_data.csv", "a")
+        send = "{},{}\n".format(msg.topic, msg.payload.decode("utf-8"))
+        data.write(send)
+        data.close()
 
 def client_subscriptions(client):
-    client.subscribe("home/+/hmit")
-    client.subscribe("home/+/temp")
+    client.subscribe("/api/homes/+/sensors/+/readings")
 
-client = mqtt.Client("sensors") #this should be a unique name
-flag_connected = 0
+def main():
+    client = mqtt.Client("sensors") #this should be a unique name
+    flag_connected = 0
+    ip = "10.0.0.182"
+    port = 1883
 
-client.on_connect = on_connect
-client.on_disconnect = on_disconnect
-client.message_callback_add("home/+/hmit", callback_sensor)
-client.message_callback_add("home/+/temp", callback_sensor)
-client.connect("10.0.0.182",1883)
-# start a new thread
-client.loop_start()
-client_subscriptions(client)
-print("......client setup complete............")
+    while flag_connected == 0:
+        print("Trying to connect to MQTT server...")
+        client.on_connect = on_connect
+        client.on_disconnect = on_disconnect
+        client.message_callback_add("/api/homes/+/sensors/+/readings", callback_sensor)
 
+        on_connect.connect_timeout = 120
+        try:
+            client.connect(ip, port)
+        except :
+            print("Error connecting to server:\n ip:",ip," port:",port)
+            time.sleep(4)
+            
+    # start a new thread
+    client.loop_start()
+    client_subscriptions(client)
+    print("......client setup complete............")
 
-while True:
-    time.sleep(4)
-    if (flag_connected != 1):
-        print("trying to connect MQTT server..")
+if __name__ == '__main__':
+    main()
