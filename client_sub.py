@@ -4,7 +4,6 @@ import requests
 import sys
 
 def on_connect(client, userdata, flags, rc):
-   global flag_connected
    flag_connected = 1
    client_subscriptions(client)
    print("Connected to MQTT server")
@@ -49,29 +48,29 @@ def callback_sensor(client, userdata, msg):
 def client_subscriptions(client):
     client.subscribe("/api/homes/+/sensors/+/readings")
 
+def connect(client, flag_connected, ip, port):
+    client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
+    client.message_callback_add("/api/homes/+/sensors/+/readings", callback_sensor)
+
+    client.connect(ip, port)
+            
+    # start a new thread
+    client.loop_start()
+    client_subscriptions(client)
+    print("......client setup complete............")
+    print("Trying to connect to MQTT server ...")
+
+    while True:
+        time.sleep(4)
+
 def main():
     client = mqtt.Client("sensors") #this should be a unique name
     flag_connected = 0
     ip = "10.0.0.182"
     port = 1883
 
-    while flag_connected == 0:
-        print("Trying to connect to MQTT server...")
-        client.on_connect = on_connect
-        client.on_disconnect = on_disconnect
-        client.message_callback_add("/api/homes/+/sensors/+/readings", callback_sensor)
-
-        on_connect.connect_timeout = 120
-        try:
-            client.connect(ip, port)
-        except :
-            print("Error connecting to server:\n ip:",ip," port:",port)
-            time.sleep(4)
-            
-    # start a new thread
-    client.loop_start()
-    client_subscriptions(client)
-    print("......client setup complete............")
-
+    connect(client, flag_connected, ip, port)
+    
 if __name__ == '__main__':
     main()
