@@ -23,7 +23,7 @@ def callback_sensor(client, userdata, msg):
         data = data.split(",")
         tempF = data[0]
         tempC = data[2]
-        hum = float(data[1]) / 100
+        hum = float(data[1])
         print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
         url = "https://osuscc-testing.azurewebsites.net" + msg.topic
         myobj = [
