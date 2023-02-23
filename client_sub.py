@@ -4,20 +4,26 @@ import requests
 import sys
 
 def on_connect(client, userdata, flags, rc):
-   flag_connected = 1
-   client_subscriptions(client)
+    # If there is a successful connection to the MQTT server:
+    # - Subscribe to all sensor MQTT topics
+    # - Inform the user 
+
+   client.subscribe("/api/homes/+/sensors/+/readings")
    print("Connected to MQTT server")
 
 def on_disconnect(client, userdata, rc):
-   global flag_connected
-   flag_connected = 0
-   print("Disconnected from MQTT server")
+    # If there is an interruption with the connection to the MQTT server:
+    # - Inform the user
 
-# a callback functions
+   print("Disconnected from MQTT server")
+   print("Trying to connect to MQTT server...")
+
+# Callback Function
 def callback_sensor(client, userdata, msg):
+    # If a message is received from the server
     upload = str(sys.argv[1])
 
-    # send data to server
+    # - Send data to server
     if upload == "remote" or upload == "both":
         data = msg.payload.decode("utf-8")
         data = data.split(",")
@@ -35,37 +41,38 @@ def callback_sensor(client, userdata, msg):
                         "date_time": str(time.time())
                     }
                 ]
-        myobj2 = {"testkey": "testvalue"}
         x = requests.put(url, json=myobj)
         print(x.status_code)
 
-    # Send data to file
+    # - Send data to file
     if upload == "local" or upload == "both":
         data = open("./python/data/sensor_data.csv", "a")
         send = "{},{}\n".format(msg.topic, msg.payload.decode("utf-8"))
         data.write(send)
         data.close()
 
-def client_subscriptions(client):
-    client.subscribe("/api/homes/+/sensors/+/readings")
-
 def connect(client, flag_connected, ip, port):
+    # What to do when there is a connection/disconnection with the MQTT server
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
+
+    # What to do when data is revived from the topic for the MQTT server
     client.message_callback_add("/api/homes/+/sensors/+/readings", callback_sensor)
 
-    client.connect(ip, port, 120)
-            
-    # start a new thread
+    # Create a Thread
     client.loop_start()
-    client_subscriptions(client)
-    print("......client setup complete............")
-    print("Trying to connect to MQTT server ...")
+    print("............client setup complete............")
 
+    # Attempt to connect to the MQTT server
+    print("Trying to connect to MQTT server...")
+    client.connect(ip, port, 120)
+
+    # Loop Forever
     while True:
         time.sleep(4)
 
 def main():
+    # Create starter variables
     client = mqtt.Client("sensors") #this should be a unique name
     flag_connected = 0
     ip = str(sys.argv[2])
