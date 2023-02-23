@@ -68,7 +68,7 @@ def connect(client, flag_connected, ip, port):
 def main():
     client = mqtt.Client("sensors") #this should be a unique name
     flag_connected = 0
-    ip = "10.0.0.182"
+    ip = str(sys.argv[2])
     port = 1883
 
     connect(client, flag_connected, ip, port)
