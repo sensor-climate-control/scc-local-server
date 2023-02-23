@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
 import requests
-import sys
+from decouple import config
 
 def on_connect(client, userdata, flags, rc):
     # If there is a successful connection to the MQTT server:
@@ -21,7 +21,7 @@ def on_disconnect(client, userdata, rc):
 # Callback Function
 def callback_sensor(client, userdata, msg):
     # If a message is received from the server
-    upload = str(sys.argv[1])
+    upload = config("UPLOAD")
 
     # - Send data to server
     if upload == "remote" or upload == "both":
@@ -31,7 +31,7 @@ def callback_sensor(client, userdata, msg):
         tempC = data[2]
         hum = float(data[1])
         print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
-        url = str(sys.argv[3]) + msg.topic
+        url = config("URL") + msg.topic
 
         myobj = [
                     {
@@ -75,7 +75,8 @@ def main():
     # Create starter variables
     client = mqtt.Client("sensors") #this should be a unique name
     flag_connected = 0
-    ip = str(sys.argv[2])
+    ip = config("IP")
+    print("IP: ", ip)
     port = 1883
 
     connect(client, flag_connected, ip, port)
