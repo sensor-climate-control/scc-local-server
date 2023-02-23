@@ -16,7 +16,7 @@ def on_disconnect(client, userdata, rc):
 # a callback functions
 def callback_sensor(client, userdata, msg):
     upload = str(sys.argv[1])
-    
+
     # send data to server
     if upload == "remote" or upload == "both":
         data = msg.payload.decode("utf-8")
@@ -26,6 +26,7 @@ def callback_sensor(client, userdata, msg):
         hum = float(data[1])
         print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
         url = "https://osuscc-testing.azurewebsites.net" + msg.topic
+
         myobj = [
                     {
                         "temp_f": tempF,
