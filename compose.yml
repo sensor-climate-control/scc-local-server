@@ -19,7 +19,6 @@ services:
   python-app:
     container_name: python
     build: .
-    # command: "python -u client_sub.py ${UPLOAD} ${IP} ${URL}"
     volumes:
       - ./python/data:/usr/src/app/python/data
     env_file: .env
