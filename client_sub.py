@@ -31,7 +31,7 @@ def callback_sensor(client, userdata, msg):
         tempC = data[2]
         hum = float(data[1])
         print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
-        url = "https://osuscc-testing.azurewebsites.net" + msg.topic
+        url = str(sys.argv[3]) + msg.topic
 
         myobj = [
                     {

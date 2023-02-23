@@ -1,6 +1,6 @@
 services:
 
-############################################################ MQTT
+############################################################ MQTT Broker
 
   mosquitto:
     image: eclipse-mosquitto
@@ -14,12 +14,12 @@ services:
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
 
-############################################################ Python
+############################################################ MQTT Subscriber
 
   python-app:
     container_name: python
     build: .
-    command: "python -u client_sub.py ${UPLOAD} ${IP}"
+    command: "python -u client_sub.py ${UPLOAD} ${IP} ${URL}"
     volumes:
       - ./python/data:/usr/src/app/python/data
     env_file: .env
