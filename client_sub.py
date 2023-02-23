@@ -41,7 +41,7 @@ def callback_sensor(client, userdata, msg):
 
     # Send data to file
     if upload == "local" or upload == "both":
-        data = open("./python/data/" + msg.topic + "-data.csv", "a")
+        data = open("./python/data/sensor_data.csv", "a")
         send = "{},{}\n".format(msg.topic, msg.payload.decode("utf-8"))
         data.write(send)
         data.close()
@@ -54,7 +54,7 @@ def connect(client, flag_connected, ip, port):
     client.on_disconnect = on_disconnect
     client.message_callback_add("/api/homes/+/sensors/+/readings", callback_sensor)
 
-    client.connect(ip, port)
+    client.connect(ip, port, 120)
             
     # start a new thread
     client.loop_start()
