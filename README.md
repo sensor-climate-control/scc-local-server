@@ -16,8 +16,7 @@
 - MQTT Subscriber: https://hub.docker.com/repository/docker/redfernj/scc-local-server-docker/general
 >*When "client_sub.py" is modified it is automatically compiled and sent to Docker Hub.*
 
-### Example .yml file
-
+### Example compose.yml
 ```.yml
 services:
 
@@ -45,9 +44,20 @@ services:
     env_file: .env
 ```
 
+### Example mosquitto.conf
+```.conf
+persistence true
+persistence_location /mosquitto/data
+log_dest file /mosquitto/log/mosquitto.log
+
+listener ??? # Your ip address
+listener 1883
+allow_anonymous true
+```
+
 ### Example File Structure:
 ```
-./mosquitto/config
+./mosquitto/config/mosquitto.conf
 ./mosquitto/data
 ./mosquitto/log
 ./python/data
