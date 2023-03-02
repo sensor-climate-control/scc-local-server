@@ -16,4 +16,4 @@
 - MQTT Subscriber: https://hub.docker.com/repository/docker/redfernj/scc-local-server-docker/general
 >*When "client_sub.py" is modified it is automatically compiled and sent to Docker Hub.*
 
-![[scc-local-server-diagram.svg]]
+<img src="./scc-local-server-diagram.svg">
