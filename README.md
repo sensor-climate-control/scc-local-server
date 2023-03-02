@@ -16,4 +16,43 @@
 - MQTT Subscriber: https://hub.docker.com/repository/docker/redfernj/scc-local-server-docker/general
 >*When "client_sub.py" is modified it is automatically compiled and sent to Docker Hub.*
 
+### Example .yml file
+
+```.yml
+services:
+
+############################################################ MQTT Broker
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    ports:
+      - 1883:1883
+      - 9001:9001
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+############################################################ MQTT Subscriber
+
+  python-app:
+    image: redfernj/scc-local-server-docker
+    container_name: python
+    volumes:
+      - ./python/data:/usr/src/app/python/data
+    env_file: .env
+```
+
+### Example File Structure:
+```
+./mosquitto/config
+./mosquitto/data
+./mosquitto/log
+./python/data
+./.env
+./compose.yml
+```
+
 <img src="./scc-local-server-diagram.svg">
