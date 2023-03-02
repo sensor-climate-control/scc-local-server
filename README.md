@@ -1,9 +1,19 @@
 # scc-local-server
 
-mosquito.conf modifications:
+### Required Software
+- Docker: https://docs.docker.com/get-docker/
+- Docker Compose:  https://docs.docker.com/compose/install/
+>*Should be pre installed, might need to install manually*
+- Ubuntu 22.10:  https://ubuntu.com/download/desktop
+> *Used for testing, should work with other operating systems*
 
-listener1883
+### Required Hardware
+- Raspberry Pi 4 Model B Rev 1.2: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
+> *Used for testing, should work with other hardware*
 
-allow_anonymous true
+### Docker Containers:
+- MQTT Broker: https://hub.docker.com/_/eclipse-mosquitto
+- MQTT Subscriber: https://hub.docker.com/repository/docker/redfernj/scc-local-server-docker/general
+>*When "client_sub.py" is modified it is automatically compiled and sent to Docker Hub.*
 
-To install necessary dependencies, run  `pip install -r requirements.txt`
+![[scc-local-server-diagram.svg]]
