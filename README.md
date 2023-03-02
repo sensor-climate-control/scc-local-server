@@ -55,7 +55,23 @@ listener 1883
 allow_anonymous true
 ```
 
-### Example File Structure:
+### Example .env
+```.env
+# Will the data revived from the MQTT server will be
+# both - stored locally and uploaded to a web server
+# remote - only uploaded to a web server
+# local - only stored locally
+UPLOAD=both
+
+# IP address the machine the MQTT server will run on
+IP= ???
+
+# URL for where to send the data via PUT request
+# - By default: https://osuscc-testing.azurewebsites.net
+URL=https://osuscc-testing.azurewebsites.net
+```
+
+### Example File Structure
 ```
 ./mosquitto/config/mosquitto.conf
 ./mosquitto/data
