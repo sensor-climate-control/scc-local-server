@@ -80,5 +80,16 @@ URL=https://osuscc-testing.azurewebsites.net
 ./.env
 ./compose.yml
 ```
+## Run
+
+### Start
+```
+docker compose Up ---build -d
+```
+
+### Stop
+```
+docker compose down
+```
 
 <img src="./scc-local-server-diagram.svg">
