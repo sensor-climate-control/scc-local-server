@@ -1,5 +1,7 @@
 # scc-local-server
 
+## Equipment
+
 ### Required Software
 - Docker: https://docs.docker.com/get-docker/
 - Docker Compose:  https://docs.docker.com/compose/install/
@@ -15,6 +17,8 @@
 - MQTT Broker: https://hub.docker.com/_/eclipse-mosquitto
 - MQTT Subscriber: https://hub.docker.com/repository/docker/redfernj/scc-local-server-docker/general
 >*When "client_sub.py" is modified it is automatically compiled and sent to Docker Hub.*
+
+## Configuration
 
 ### Example compose.yml
 ```.yml
