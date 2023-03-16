@@ -88,7 +88,7 @@ URL=https://osuscc-testing.azurewebsites.net
 
 ### Start
 ```
-docker compose up ---build -d
+docker compose up --build -d
 ```
 
 ### Stop
