@@ -22,15 +22,15 @@ def on_disconnect(client, userdata, rc):
 def callback_sensor(client, userdata, msg):
     # If a message is received from the server
     upload = config("UPLOAD")
+    data = msg.payload.decode("utf-8")
+    data = data.split(",")
+    tempF = data[0]
+    tempC = data[2]
+    hum = float(data[1])
+    print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
 
     # - Send data to server
     if upload == "remote" or upload == "both":
-        data = msg.payload.decode("utf-8")
-        data = data.split(",")
-        tempF = data[0]
-        tempC = data[2]
-        hum = float(data[1])
-        print(msg.topic,": tempF = ",tempF, " tempC = ", tempC, " hum = ", hum)
         url = config("URL") + msg.topic
 
         myobj = [
@@ -65,11 +65,19 @@ def connect(client, flag_connected, ip, port):
 
     # Attempt to connect to the MQTT server
     print("Trying to connect to MQTT server...")
-    client.connect(ip, port, 120)
 
-    # Loop Forever
-    while True:
-        time.sleep(4)
+    while(flag_connected == False):
+        try:
+            client.connect(ip, port, 120)
+        except Exception as e:
+            print("Re-trying...")
+        else:
+            # Loop Forever
+            flag_connected = True
+            while True:
+                time.sleep(4)
+            
+
 
 def main():
     # Create starter variables
