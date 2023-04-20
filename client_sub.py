@@ -41,7 +41,10 @@ def callback_sensor(client, userdata, msg):
                         "date_time": str(time.time())
                     }
                 ]
-        x = requests.put(url, json=myobj)
+        headers = {
+            "Authorization": f"Bearer {config('TOKEN')}" 
+        }
+        x = requests.put(url, json=myobj, headers=headers)
         print(x.status_code)
 
     # - Send data to file
