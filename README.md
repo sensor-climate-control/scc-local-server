@@ -68,11 +68,15 @@ allow_anonymous true
 UPLOAD=both
 
 # IP address the machine the MQTT server will run on
-IP= ???
+IP=192.168.0.10
 
 # URL for where to send the data via PUT request
 # - By default: https://osuscc-testing.azurewebsites.net
 URL=https://osuscc-testing.azurewebsites.net
+
+
+# Authentication token to upload data to the server
+TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDQwOTg5MjBiZGIzYjYwYjdkZWNhOGYiLCJpYXQiOjE2ODE5NTUxNTMsImV4cCI6MTcxMzQ5MTE1M30.gILdaaKY6PX7mEdeSkSRGHbnwZzlZG0xWz8678hvZf0
 ```
 
 ### Example File Structure
