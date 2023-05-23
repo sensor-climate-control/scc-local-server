@@ -6,6 +6,7 @@
 - Docker: https://docs.docker.com/get-docker/
 - Docker Compose:  https://docs.docker.com/compose/install/
 >*Should be pre installed, might need to install manually*
+>
 >*Need to have Docker Desktop running if using a Windows machine*
 - Ubuntu 22.10:  https://ubuntu.com/download/desktop
 > *Used for testing, should work with other operating systems*
