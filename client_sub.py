@@ -38,7 +38,7 @@ def callback_sensor(client, userdata, msg):
                         "temp_f": tempF,
                         "temp_c": tempC,
                         "humidity": str(hum),
-                        "date_time": str(time.time())
+                        "date_time": str(time.time() * 1000)
                     }
                 ]
         headers = {
